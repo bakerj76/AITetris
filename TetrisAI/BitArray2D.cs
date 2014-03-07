@@ -17,8 +17,6 @@ namespace TetrisAI
         /// The height of the array. 
         /// </summary>
         public int Height { get; private set; }
-
-        public enum Direction {Left, Right, Up, Down}
         #endregion
 
         #region Private Variables
@@ -79,9 +77,34 @@ namespace TetrisAI
             return temp;
         }
 
-        public void Transponse()
+        public void RotateLeft()
         {
+            var temp = new bool[Height, Width];
             
+            for (int x = 0; x < Height; x++)
+            {
+                for (int y = 0; y < Width; y++)
+                {
+                    temp[x, y] = _map[Height - y - 1, x];
+                }
+            }
+
+            _map = temp;
+        }
+
+        public void RotateRight()
+        {
+            var temp = new bool[Height, Width];
+
+            for (int x = 0; x < Height; x++)
+            {
+                for (int y = 0; y < Width; y++)
+                {
+                    temp[x, y] = _map[y, Width - x - 1];
+                }
+            }
+
+            _map = temp;
         }
 
         /// <summary>
@@ -93,16 +116,16 @@ namespace TetrisAI
             {
                 for (var x = 0; x < Width; x++)
                 {
-                    Console.Write(_map[x, y] ? 1 : 0);
+                    Console.Write(_map[x, y] ? '█' : ' ');
                 }
                 Console.WriteLine();
             }
         }
         #endregion
 
-        public static int Mod(int a, int b)
+        /*public static int Mod(int a, int b)
         {
             return a - b * (a / b);
-        }
+        }*/
     }
 }
