@@ -13,6 +13,9 @@ namespace TetrisAI
         private const int MAX_PIECE_TYPES = 7;
 
         private enum Pieces { SQUAREBLOCK, TBLOCK, SBLOCK, ZBLOCK, LBLOCK, JBLOCK, IBLOCK }
+
+        private static bool _piecesWereCreated;
+        private static BitArray2D[] _pieces;
         private BitArray2D _board;
 
         /// <summary>
@@ -20,12 +23,71 @@ namespace TetrisAI
         /// </summary>
         public Tetris()
         {
-            _board = new BitArray2D(TETRIS_HEIGHT, TETRIS_HEIGHT);
+            _board = new BitArray2D(TETRIS_WIDTH, TETRIS_HEIGHT);
+            //_board.SetBit(0, 0, true);
 
-            _board.PrettyPrint();
-            Console.ReadKey();
+            //_board.PrettyPrint();
+            //Console.ReadKey();
+
+            //Console.ReadKey();
+            
+            if (!_piecesWereCreated)
+            {
+                _piecesWereCreated = true;
+                CreatePieces();
+            }
         }
 
+        public static void CreatePieces()
+        {
+            _pieces[(int)Pieces.SQUAREBLOCK] = new BitArray2D(new[] {
+                new[] {0, 1, 1, 0},
+                new[] {0, 1, 1, 0},
+                new[] {0, 0, 0, 0},
+                new[] {0, 0, 0, 0}});
+
+            _pieces[(int)Pieces.TBLOCK] = new BitArray2D(new[] {
+                new[] {0, 1, 0, 0},
+                new[] {1, 1, 1, 0},
+                new[] {0, 0, 0, 0},
+                new[] {0, 0, 0, 0}
+            });
+
+            _pieces[(int)Pieces.SBLOCK] = new BitArray2D(new[] {
+                new[] {0, 1, 1, 0},
+                new[] {1, 1, 0, 0},
+                new[] {0, 0, 0, 0},
+                new[] {0, 0, 0, 0}
+            });
+
+            _pieces[(int)Pieces.ZBLOCK] = new BitArray2D(new[] {
+                new[] {1, 1, 0, 0},
+                new[] {0, 1, 1, 0},
+                new[] {0, 0, 0, 0},
+                new[] {0, 0, 0, 0}
+            });
+
+            _pieces[(int)Pieces.JBLOCK] = new BitArray2D(new[] {
+                new[] {0, 1, 0, 0},
+                new[] {0, 1, 0, 0},
+                new[] {1, 1, 0, 0},
+                new[] {0, 0, 0, 0}
+            });
+
+            _pieces[(int)Pieces.LBLOCK] = new BitArray2D(new[] {
+                new[] {0, 1, 0, 0},
+                new[] {0, 1, 0, 0},
+                new[] {0, 1, 1, 0},
+                new[] {0, 0, 0, 0}
+            });
+
+            _pieces[(int)Pieces.IBLOCK] = new BitArray2D(new[] {
+                new[] {0, 1, 0, 0},
+                new[] {0, 1, 0, 0},
+                new[] {0, 1, 0, 0},
+                new[] {0, 1, 0, 0}
+            });
+        }
 
         
 

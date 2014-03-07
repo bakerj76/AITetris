@@ -17,6 +17,8 @@ namespace TetrisAI
         /// The height of the array. 
         /// </summary>
         public int Height { get; private set; }
+
+        public enum Direction {Left, Right, Up, Down}
         #endregion
 
         #region Private Variables
@@ -38,6 +40,22 @@ namespace TetrisAI
             Height = height;
 
             _map = new bool[width, height];
+        }
+
+        public BitArray2D(int[][] map)
+        {
+            Height = map.Length;
+            Width = map[0].Length;
+
+            _map = new bool[Width, Height];
+            
+            for (int y = 0; y < Height; y++)
+            {
+                for (int x = 0; x < Width; x++)
+                {
+                    _map[x, y] = map[y][x] == 1;
+                }
+            }
         }
         #endregion
 
@@ -61,6 +79,11 @@ namespace TetrisAI
             return temp;
         }
 
+        public void Transponse()
+        {
+            
+        }
+
         /// <summary>
         /// Prettily prints the array.
         /// </summary>
@@ -76,5 +99,10 @@ namespace TetrisAI
             }
         }
         #endregion
+
+        public static int Mod(int a, int b)
+        {
+            return a - b * (a / b);
+        }
     }
 }
