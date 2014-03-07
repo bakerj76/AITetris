@@ -14,9 +14,14 @@ namespace TetrisAI
 
         private enum Pieces { SQUAREBLOCK, TBLOCK, SBLOCK, ZBLOCK, LBLOCK, JBLOCK, IBLOCK }
 
-        private static bool _piecesWereCreated;
         private static BitArray2D[] _pieces;
         private BitArray2D _board;
+
+        static Tetris()
+        {
+            _pieces = new BitArray2D[MAX_PIECE_TYPES];
+            CreatePieces();
+        }
 
         /// <summary>
         /// The actual Tetris game.
@@ -30,12 +35,6 @@ namespace TetrisAI
             //Console.ReadKey();
 
             //Console.ReadKey();
-            
-            if (!_piecesWereCreated)
-            {
-                _piecesWereCreated = true;
-                CreatePieces();
-            }
         }
 
         public static void CreatePieces()
