@@ -116,7 +116,7 @@ namespace TetrisAI
             {
                 for (var x = 0; x < Width; x++)
                 {
-                    Console.Write(_map[x, y] ? '█' : ' ');
+                    Console.Write(_map[x, y] ? 'X' : '.');
                 }
                 Console.WriteLine();
             }

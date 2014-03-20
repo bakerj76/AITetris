@@ -11,6 +11,8 @@ namespace TetrisAI
         public static void Main(string[] args)
         {
             var tetris = new Tetris();
+            tetris.CreatePieces();
+            Console.ReadKey();
         }
     }
 }
