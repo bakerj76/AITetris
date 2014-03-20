@@ -36,24 +36,8 @@ namespace TetrisAI
         {
             Width = width;
             Height = height;
-
-            _map = new bool[width, height];
-        }
-
-        public BitArray2D(int[][] map)
-        {
-            Height = map.Length;
-            Width = map[0].Length;
-
-            _map = new bool[Width, Height];
             
-            for (int y = 0; y < Height; y++)
-            {
-                for (int x = 0; x < Width; x++)
-                {
-                    _map[x, y] = map[y][x] == 1;
-                }
-            }
+            _map = new bool[width, height];
         }
         #endregion
 
@@ -77,19 +61,19 @@ namespace TetrisAI
             return temp;
         }
 
-        public void RotateLeft()
+        public BitArray2D RotateLeft()
         {
-            var temp = new bool[Height, Width];
+            var temp = new BitArray2D(Width, Height);
             
             for (int x = 0; x < Height; x++)
             {
                 for (int y = 0; y < Width; y++)
                 {
-                    temp[x, y] = _map[Height - y - 1, x];
+                    temp.SetBit(x, y, _map[Height - y - 1, x]);
                 }
             }
 
-            _map = temp;
+            return temp;
         }
 
         public void RotateRight()
@@ -122,10 +106,5 @@ namespace TetrisAI
             }
         }
         #endregion
-
-        /*public static int Mod(int a, int b)
-        {
-            return a - b * (a / b);
-        }*/
     }
 }
