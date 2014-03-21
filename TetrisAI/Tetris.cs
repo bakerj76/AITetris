@@ -29,12 +29,35 @@ namespace TetrisAI
         /// </summary>
         public Tetris()
         {
-            
+            CreateBoard();
+            int i = 0;
+            BitArray2D s_piece = _pieces[i];
+/*            while(true)
+            {
+                Console.Clear();
+                s_piece.PrettyPrint();
+                switch(Console.ReadKey().Key)
+                {
+                    case ConsoleKey.Escape:
+                        return;
+                    case ConsoleKey.RightArrow:
+                        s_piece = s_piece.RotateRight();
+                        break;
+                    case ConsoleKey.UpArrow:
+                        ++i;
+                        i = i % MAX_PIECE_TYPES;
+                        s_piece = _pieces[i];
+                        break;
+                }
+            }*/
         }
-
+        /// <summary>
+        /// Creates the pieces on the console, from a text file.
+        /// </summary>
         public static void CreatePieces()
         {
-            using (StreamReader file = new StreamReader(@"C:\Users\Owner\documents\visual studio 2013\Projects\TetrisAI\TetrisAI\pieces.txt"))
+            /*This reads the size of the array and pieces from pieces.txt */
+            using (StringReader file = new StringReader(Resource.pieces))
             {
                 for (int piece = 0; piece < MAX_PIECE_TYPES; piece++)
                 {
@@ -50,10 +73,18 @@ namespace TetrisAI
                             _pieces[piece].SetBit(i, line, temp[i] == '1');
                         }
                     }
-
-                    _pieces[piece].PrettyPrint();
                 }
             }
+        }
+        public void CreateBoard()
+        {
+            var board = new BitArray2D(TETRIS_WIDTH, TETRIS_HEIGHT);
+            board.PrettyPrint();
+            Console.BufferHeight = 23;
+            Console.BufferWidth = 46;
+            Console.WindowHeight = 23;
+            Console.WindowWidth = 46;
+            Console.WindowTop = 0;
         }
     }
 }

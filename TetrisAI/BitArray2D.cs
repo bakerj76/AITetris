@@ -76,19 +76,19 @@ namespace TetrisAI
             return temp;
         }
 
-        public void RotateRight()
+        public BitArray2D RotateRight()
         {
-            var temp = new bool[Height, Width];
+            var temp = new BitArray2D(Width, Height);
 
             for (int x = 0; x < Height; x++)
             {
                 for (int y = 0; y < Width; y++)
                 {
-                    temp[x, y] = _map[y, Width - x - 1];
+                   temp.SetBit(x,y,_map[y, Width - x - 1]);
                 }
             }
 
-            _map = temp;
+            return temp;
         }
 
         /// <summary>
