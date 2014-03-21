@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.IO;
 
@@ -9,86 +10,107 @@ namespace TetrisAI
 {
     class Tetris
     {
-        private const int TETRIS_WIDTH = 10;
-        private const int TETRIS_HEIGHT = 22;
-        private const int MAX_PIECE_TYPES = 7;
+        public const int TETRIS_WIDTH = 10;
+        public const int TETRIS_HEIGHT = 22;
 
-        private enum Pieces { IBLOCK, OBLOCK, TBLOCK, SBLOCK, ZBLOCK, JBLOCK, LBLOCK }
 
-        private static BitArray2D[] _pieces;
+        private Piece _mainPiece;
+
+        private Task _drawThread, _inputThread;
+
+        private int _gravityTime;
         //private BitArray2D _board;
-
-        static Tetris()
-        {
-            _pieces = new BitArray2D[MAX_PIECE_TYPES];
-            CreatePieces();
-        }
 
         /// <summary>
         /// The actual Tetris game.
         /// </summary>
         public Tetris()
         {
-            CreateBoard();
             Random rand = new Random();
-            int RND = rand.Next(MAX_PIECE_TYPES);
-            int i = 0;
-            BitArray2D s_piece = _pieces[RND];
-           /*  while(true)
+            Piece.Pieces RND = (Piece.Pieces)rand.Next(Piece.MAX_PIECE_TYPES);
+            _mainPiece = new Piece(4, 0, RND);
+
+            _gravityTime = 500;
+
+            CreateBoard();
+            _mainPiece.DrawPiece();
+
+            _drawThread = new Task(new Action(Draw));
+            _inputThread = new Task(new Action(Input));
+            _drawThread.Start();
+            _inputThread.Start();
+
+            while(!_inputThread.IsCompleted)
             {
- 
-                s_piece.PrettyPrint();
-                switch(Console.ReadKey().Key)
+                _mainPiece.SimulateGravity();
+                Thread.Sleep(_gravityTime);
+            }
+        }
+
+
+        public void Input()
+        {
+            while (true)
+            {
+                //_gravityTime = 500;
+                switch (Console.ReadKey(true).Key)
                 {
+                    case ConsoleKey.LeftArrow:
+                        _mainPiece.MoveLeft();
+                        break;
+                    case ConsoleKey.RightArrow:
+                        _mainPiece.MoveRight();
+                        break;
+                    case ConsoleKey.UpArrow:
+                        _mainPiece.RotateRight();
+                        break;
                     case ConsoleKey.Escape:
                         return;
-                    case ConsoleKey.UpArrow:
-                        s_piece = s_piece.RotateRight();
+                    case ConsoleKey.DownArrow:
+                        _gravityTime = 1;
                         break;
-                  case ConsoleKey.UpArrow:
-                        ++i;
-                        i = i % MAX_PIECE_TYPES;
-                        s_piece = _pieces[i];
-                        break;
-                }*/
-            
+                }
+            }
         }
-        /// <summary>
-        /// Creates the pieces on the console, from a text file.
-        /// </summary>
-        public static void CreatePieces()
+
+        public void CreateBoard()
         {
-            /*This reads the size of the array and pieces from pieces.txt */
-            using (StringReader file = new StringReader(Resource.pieces))
+            var board = new BitArray2D(TETRIS_WIDTH, TETRIS_HEIGHT);
+            BoardPrettyPrint();
+            
+            Console.WindowHeight = 23;
+            Console.WindowWidth = 46;
+
+            Console.BufferHeight = 23;
+            Console.BufferWidth = 46;
+
+            Console.WindowTop = 0;
+            Console.CursorVisible = false;
+            Console.SetCursorPosition(0, 0);
+        }
+        public void BoardPrettyPrint()
+        {
+            for (var y = 0; y < TETRIS_HEIGHT; y++ )
             {
-                for (int piece = 0; piece < MAX_PIECE_TYPES; piece++)
+                for (var x = 0; x < TETRIS_WIDTH + 1; x++)
                 {
-                    int count = int.Parse(file.ReadLine());
-                    _pieces[piece] = new BitArray2D(count, count);
-
-                    for (int line = 0; line < count; line++)
+                    if (x == TETRIS_WIDTH)
                     {
-                        string temp = file.ReadLine();
-
-                        for (int i = 0; i < temp.Length; i++)
-                        {
-                            _pieces[piece].SetBit(i, line, temp[i] == '1');
-                        }
+                        Console.SetCursorPosition(x, y);
+                        Console.BackgroundColor = ConsoleColor.White;
+                        Console.Write(" ");
                     }
                 }
             }
         }
-        public void CreateBoard()
+        public void Draw()
         {
-            var board = new BitArray2D(TETRIS_WIDTH, TETRIS_HEIGHT);
-            board.PrettyPrint();
-            Console.BufferHeight = 23;
-            Console.BufferWidth = 46;
-            Console.WindowHeight = 23;
-            Console.WindowWidth = 46;
-            Console.WindowTop = 0;
-            Console.CursorVisible = true;
-            Console.SetCursorPosition(0, 0);
+            while (true)
+            {
+                _mainPiece.DrawPiece();
+
+                System.Threading.Thread.Sleep(100);
+            }
         }
     }
 }

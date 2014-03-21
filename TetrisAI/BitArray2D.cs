@@ -27,6 +27,14 @@ namespace TetrisAI
         #endregion
 
         #region Constructor
+        
+
+        public bool this[int x, int y]
+        {
+            set { _map[x, y] = value;  }
+            get { return _map[x, y]; }
+        }
+
         /// <summary>
         /// Creates a 2D array of bits.
         /// </summary>
@@ -51,6 +59,11 @@ namespace TetrisAI
         public void SetBit(int x, int y, bool value)
         {
             _map[x, y] = value;
+        }
+
+        public bool GetBit(int x, int y)
+        {
+            return _map[x, y];
         }
 
         public bool[,] GetBoolArray()
@@ -100,7 +113,7 @@ namespace TetrisAI
             {
                 for (var x = 0; x < Width; x++)
                 {
-                    Console.Write(_map[x, y] ? 'X' : '.');
+                    Console.Write(_map[x, y] ? 'X' : ' ');
                 }
                 Console.WriteLine();
             }
