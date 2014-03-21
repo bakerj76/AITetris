@@ -37,6 +37,7 @@
   <ItemGroup>
     <Compile Include="BitArray2D.cs" />
     <Compile Include="Driver.cs" />
+    <Compile Include="Piece.cs" />
     <Compile Include="Resource1.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>

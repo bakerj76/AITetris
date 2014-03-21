@@ -30,26 +30,28 @@ namespace TetrisAI
         public Tetris()
         {
             CreateBoard();
+            Random rand = new Random();
+            int RND = rand.Next(MAX_PIECE_TYPES);
             int i = 0;
-            BitArray2D s_piece = _pieces[i];
-/*            while(true)
+            BitArray2D s_piece = _pieces[RND];
+           /*  while(true)
             {
-                Console.Clear();
+ 
                 s_piece.PrettyPrint();
                 switch(Console.ReadKey().Key)
                 {
                     case ConsoleKey.Escape:
                         return;
-                    case ConsoleKey.RightArrow:
+                    case ConsoleKey.UpArrow:
                         s_piece = s_piece.RotateRight();
                         break;
-                    case ConsoleKey.UpArrow:
+                  case ConsoleKey.UpArrow:
                         ++i;
                         i = i % MAX_PIECE_TYPES;
                         s_piece = _pieces[i];
                         break;
-                }
-            }*/
+                }*/
+            
         }
         /// <summary>
         /// Creates the pieces on the console, from a text file.
@@ -85,6 +87,8 @@ namespace TetrisAI
             Console.WindowHeight = 23;
             Console.WindowWidth = 46;
             Console.WindowTop = 0;
+            Console.CursorVisible = true;
+            Console.SetCursorPosition(0, 0);
         }
     }
 }
